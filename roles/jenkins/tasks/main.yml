@@ -46,14 +46,3 @@
     name: jenkins
     state: latest
     update_cache: yes
-
-- name: Install Ansible repo on Jenkins host
-  apt_repository:
-    repo: ppa:ansible/ansible
-    state: present
-
-- name: Install Ansible package on Jenkins host
-  apt:
-    name: ansible
-    state: latest
-    update_cache: yes
