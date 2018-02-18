@@ -1,0 +1,32 @@
+---
+# tasks file for roles/jenkins
+- name: create volume group
+  lvg:
+    vg: vg_data
+    pvs: /dev/sdc
+
+- name: create logical volume
+  lvol:
+    vg: vg_data
+    lv: lv_data
+    size: 100%FREE
+    shrink: no
+    state: present
+
+- name: create directory for jenkins data
+  file:
+    path: /opt/jenkins
+    state: directory
+    mode: 0755
+
+- name: format lv
+  filesystem:
+    fstype: ext4
+    dev: /dev/mapper/vg_data-lv_data
+    
+- name: mount lv and modify /etc/fstab
+  mount:
+    path: /opt/jenkins
+    src: /dev/mapper/vg_data-lv_data
+    fstype: ext4
+    state: mounted
