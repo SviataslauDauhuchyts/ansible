@@ -1,11 +1,11 @@
 ---
 # tasks file for roles/jenkins
-- name: create volume group
+- name: Create volume group
   lvg:
     vg: vg_data
     pvs: /dev/sdc
 
-- name: create logical volume
+- name: Create logical volume
   lvol:
     vg: vg_data
     lv: lv_data
@@ -13,20 +13,36 @@
     shrink: no
     state: present
 
-- name: create directory for jenkins data
+- name: Create directory for jenkins data
   file:
     path: /opt/jenkins
     state: directory
     mode: 0755
 
-- name: format lv
+- name: Format lv
   filesystem:
     fstype: ext4
     dev: /dev/mapper/vg_data-lv_data
-    
-- name: mount lv and modify /etc/fstab
+
+- name: Mount lv and modify /etc/fstab
   mount:
     path: /opt/jenkins
     src: /dev/mapper/vg_data-lv_data
     fstype: ext4
     state: mounted
+
+- name: Add jenkins signing key
+  apt_key:
+    url: https://pkg.jenkins.io/debian/jenkins-ci.org.key
+    state: present
+
+- name: Add jenkins repository
+  apt_repository:
+    repo: deb https://pkg.jenkins.io/debian-stable binary/
+    state: present
+
+- name: Install jenkins package
+  apt:
+    name: jenkins
+    state: latest
+    update_cache: yes
