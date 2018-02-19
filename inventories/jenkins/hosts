@@ -1,2 +1,2 @@
 [jenkins]
-jenkins-host ansible_user=sviataslau ansible_host=52.232.64.123
+jenkins-host ansible_user=sviataslau ansible_host=104.40.234.202
