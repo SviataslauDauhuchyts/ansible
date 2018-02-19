@@ -1,0 +1,7 @@
+---
+- name: Test ansible with jenkins
+  gather_facts: no
+  become: true
+  hosts: jenkins
+  tasks:
+    - ping:
